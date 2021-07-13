@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/main_graph"
+            app:startDestination="@id/dogsFragment">
+
+
+
+    <fragment android:id="@+id/dogsFragment" android:name="com.jasvir.dogsapp.ui.fragment.DogsFragment"
+              android:label="fragment_dogs" tools:layout="@layout/fragment_dogs">
+        <action android:id="@+id/action_dogsFragment_to_commentsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_enter_anim" app:popExitAnim="@anim/nav_default_exit_anim"             app:popUpTo="@+id/dogsFragment"/>
+    </fragment>
+</navigation>

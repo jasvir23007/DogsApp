@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Dogs App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="network_error">Network Error</string>
+    <string name="not_connected">Network not connected to internet</string>
+    <string name="emty_body">Empty Body</string>
+    <string name="comments">Comments</string>
+    <string name="dogs">dogs</string>
+</resources>
