@@ -20,31 +20,31 @@ class RepositoryImpl(
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : Repository {
 
-    //Switched context to background thread
-    override suspend fun getdogsState(breedId: Int): DogsState =
-        withContext(backgroundDispatcher) {
-            if (!networkState.isConnected()) {
-                return@withContext DogsState.Error(application.getString(R.string.not_connected))
-            }
-
-            val response = try {
-                dogApi.getdogsResponse(API_KEY, LIMIT, PAGE , breedId)
-            } catch (e: Throwable) {
-                //Sending a generic exception to the view for now
-
-                Timber.e(e)
-                return@withContext DogsState.Error(application.getString(R.string.network_error))
-            }
-
-            return@withContext if (response.isSuccessful) {
-                response.body()?.let {
-                    DogsState.DogsLoaded(it)
-                } ?: DogsState.Error(application.getString(R.string.emty_body))
-            } else {
-                Timber.e(response.message())
-                DogsState.Error(response.message())
-            }
-        }
+//    //Switched context to background thread
+//    override suspend fun getdogsState(breedId: Int): DogsState =
+//        withContext(backgroundDispatcher) {
+//            if (!networkState.isConnected()) {
+//                return@withContext DogsState.Error(application.getString(R.string.not_connected))
+//            }
+//
+//            val response = try {
+//                dogApi.getdogsResponse(API_KEY, LIMIT, PAGE , breedId)
+//            } catch (e: Throwable) {
+//                //Sending a generic exception to the view for now
+//
+//                Timber.e(e)
+//                return@withContext DogsState.Error(application.getString(R.string.network_error))
+//            }
+//
+//            return@withContext if (response.isSuccessful) {
+//                response.body()?.let {
+//                    DogsState.DogsLoaded(it)
+//                } ?: DogsState.Error(application.getString(R.string.emty_body))
+//            } else {
+//                Timber.e(response.message())
+//                DogsState.Error(response.message())
+//            }
+//        }
 
     //Switched context to background thread
     override suspend fun getCommentsFordogs(): BreedState = withContext(backgroundDispatcher) {
@@ -73,6 +73,6 @@ class RepositoryImpl(
 }
 
 interface Repository {
-    suspend fun getdogsState(breedId: Int): DogsState
+   // suspend fun getdogsState(breedId: Int): DogsState
     suspend fun getCommentsFordogs(): BreedState
 }

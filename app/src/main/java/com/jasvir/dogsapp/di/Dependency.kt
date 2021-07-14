@@ -29,7 +29,7 @@ val dataSourceModule = module {
 }
 
 val viewmodelModule = module {
-    viewModel { DogsViewModel(get()) }
+    viewModel { DogsViewModel(get(),get()) }
 
 }
 

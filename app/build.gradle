@@ -79,6 +79,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycle"
     api "androidx.lifecycle:lifecycle-extensions:$archLifecycle"
 
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$archLifecycle"
     androidTestImplementation "io.mockk:mockk-android:$mockkVersion"

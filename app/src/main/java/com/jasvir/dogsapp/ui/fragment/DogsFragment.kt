@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.paging.PagingData
 import com.jasvir.dogsapp.R
 import com.jasvir.dogsapp.coroutines.MainThreadScope
 import com.google.android.material.snackbar.Snackbar
@@ -17,6 +18,9 @@ import com.jasvir.dogsapp.networkstates.BreedState
 import com.jasvir.dogsapp.networkstates.DogsState
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dogs.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -102,7 +106,17 @@ class DogsFragment : Fragment(), OndogClickListener {
                             position: Int,
                             id: Long
                         ) {
-                            dogsViewModel?.refreshdogs(it.dogs[position].id)
+                          //  dogsViewModel?.refreshdogs(it.dogs[position].id)
+
+                        val breedId =  it.dogs[position].id
+                        GlobalScope.launch {
+                            dogAdapter.submitData(PagingData.empty())
+                            dogsViewModel?.getListforSearch(breedId)?.collect {
+                                dogAdapter.submitData(it)
+                            }
+                        }
+
+
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {}
