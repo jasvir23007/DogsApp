@@ -39,6 +39,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+
+
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines"
@@ -47,6 +50,10 @@ dependencies {
     //Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:${constraintLayout}"
     implementation "androidx.constraintlayout:constraintlayout-solver:${constraintLayout}"
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+
+
 
     //Koin DI
     implementation "org.koin:koin-android:$koin"

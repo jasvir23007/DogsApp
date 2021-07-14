@@ -11,7 +11,7 @@ import com.jasvir.dogsapp.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import java.util.ArrayList
 
-class SearchDataSource(private val dogApi: Api, private val repository: Repository,
+class SearchDataSource(private val repository: Repository,
                         private val query: Int): PagingSource<Int, DogData>() {
 
     override fun getRefreshKey(state: PagingState<Int, DogData>): Int? {
@@ -24,12 +24,12 @@ class SearchDataSource(private val dogApi: Api, private val repository: Reposito
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DogData> {
         return try {
             val nextPage = params.key ?: 0
-            val response = dogApi.getdogsResponse(Constants.API_KEY, 20, nextPage, breed_id = query)
-            val privateState = MutableLiveData<DogsState>()
+            val response = repository.getdogsState(nextPage,query)
+
             LoadResult.Page(
-                data = response.body()!!,
+                data = response,
                 prevKey = if (nextPage == 0) null else nextPage - 20 ,
-                nextKey = if(listOf(response).size%20==0) response.body()!!.size + 20 else null
+                nextKey = if(listOf(response).size%20==0) response.size + 20 else null
             )
         }catch (e: Exception){
             LoadResult.Error(e)

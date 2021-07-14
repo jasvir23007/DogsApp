@@ -1,10 +1,13 @@
 package com.jasvir.dogsapp
 
 import androidx.lifecycle.Observer
+import androidx.paging.PagingData
+import com.jasvir.dogsapp.data.DogData
 import com.jasvir.dogsapp.networkstates.BreedState
 import com.jasvir.dogsapp.networkstates.DogsState
 import com.jasvir.dogsapp.ui.fragment.DogsViewModel
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -14,8 +17,6 @@ import timber.log.Timber
 class DogsViewModelTest : BaseTestClass() {
 
     private lateinit var dogsViewModel: DogsViewModel
-    @RelaxedMockK
-    lateinit var mockObserver: Observer<DogsState>
 
     @RelaxedMockK
     lateinit var mockBreedObserver: Observer<BreedState>
@@ -57,25 +58,11 @@ class DogsViewModelTest : BaseTestClass() {
 
     @Test
     fun testGetdogsDataIsSuccessful() =
-        runBlocking<Unit> {
-            dogsViewModel.dogLiveData.observeForever(mockObserver)
-            assert(dogsViewModel.dogLiveData.value == null)
-            dogsViewModel.refreshdogs(1).join()
-            val value = dogsViewModel.dogLiveData.value
-            println("called..... suspend function")
-
-            assert(value != null)
-            when (value) {
-                is DogsState.DogsLoaded -> {
-                    assert(value.dogs.size >= 0)
-                }
-                is DogsState.Error -> {
-                    Timber.e(value.message)
-                    assert(false)
-                }
+        runBlocking{
+            dogsViewModel.getListforSearch(1).collect {
+                assert(!it.equals(emptyList<DogData>()))
             }
 
-            assert((value as DogsState.DogsLoaded).dogs.size >= 0)
         }
 
 

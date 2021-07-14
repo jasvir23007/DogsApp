@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.jasvir.dogsapp.data.DogData
 import kotlinx.android.synthetic.main.adapter_dogs.view.*
 
-class DogAdapter(private var listOfdogs: List<DogData>, private val dogClickListener: OndogClickListener) :
+class DogAdapter() :
      PagingDataAdapter<DogData, DogViewHolder>(DogsDiffCallBack())  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -19,22 +19,12 @@ class DogAdapter(private var listOfdogs: List<DogData>, private val dogClickList
         return DogViewHolder(view)
     }
 
-//    override fun getItemCount(): Int {
-//        return listOfdogs.size
-//    }
 
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
         val dog = getItem(position)!!
         holder.bindView(dog)
-        holder.itemView.setOnClickListener {
-            dogClickListener.dogClicked(dog)
-        }
     }
 
-    fun updatedogs(dogs: List<DogData>) {
-        listOfdogs = dogs
-        notifyDataSetChanged()
-    }
 }
 
 
@@ -52,16 +42,12 @@ class DogsDiffCallBack : DiffUtil.ItemCallback<DogData>() {
 class DogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindView(dog: DogData) {
         itemView.apply {
-
             Glide
                 .with(this)
                 .load(dog.url)
                 .into(itemView.ivImage);
-
         }
     }
 }
 
-interface OndogClickListener {
-    fun dogClicked(dog: DogData)
-}
+

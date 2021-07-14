@@ -5,6 +5,7 @@ import com.jasvir.dogsapp.R
 import com.jasvir.dogsapp.networkstates.BreedState
 import com.jasvir.dogsapp.networkstates.DogsState
 import com.jasvir.dogsapp.networkstates.NetworkState
+import com.jasvir.dogsapp.utils.Constants
 import com.jasvir.dogsapp.utils.Constants.API_KEY
 import com.jasvir.dogsapp.utils.Constants.LIMIT
 import com.jasvir.dogsapp.utils.Constants.PAGE
@@ -19,6 +20,13 @@ class RepositoryImpl(
     private val application: Application,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : Repository {
+    override suspend fun getdogsState(nextPage: Int, breedId: Int): List<DogData> {
+        try {
+            return dogApi.getdogsResponse(Constants.API_KEY, 20, nextPage, breedId).body()!!
+        } catch (e: Exception) {
+            return emptyList()
+        }
+    }
 
 //    //Switched context to background thread
 //    override suspend fun getdogsState(breedId: Int): DogsState =
@@ -73,6 +81,6 @@ class RepositoryImpl(
 }
 
 interface Repository {
-   // suspend fun getdogsState(breedId: Int): DogsState
+    suspend fun getdogsState(nextPage: Int, breedId: Int): List<DogData>
     suspend fun getCommentsFordogs(): BreedState
 }
