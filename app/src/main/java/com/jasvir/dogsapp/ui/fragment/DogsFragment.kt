@@ -1,5 +1,6 @@
 package com.jasvir.dogsapp.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.paging.PagingData
 import com.jasvir.dogsapp.R
 import com.jasvir.dogsapp.coroutines.MainThreadScope
@@ -24,7 +28,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class DogsFragment : Fragment(), OndogClickListener {
+class DogsFragment : Fragment(), OndogClickListener, LifecycleObserver {
 
 
     private val uiScope = MainThreadScope()
@@ -35,26 +39,21 @@ class DogsFragment : Fragment(), OndogClickListener {
         lifecycle.addObserver(uiScope)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dogs, container, false)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().lifecycle.addObserver(this)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
-
-
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreated(){
         val dogAdapter = DogAdapter(emptyList(), this)
         dogsRecyclerView?.apply {
             adapter = dogAdapter
         }
 
         dogsViewModel = getViewModel()
-        dogsViewModel?.dogLiveData?.observe(this, Observer { dogState ->
+        dogsViewModel?.dogLiveData?.observe(viewLifecycleOwner, Observer { dogState ->
             if (dogState == null) {
                 return@Observer
             }
@@ -68,7 +67,7 @@ class DogsFragment : Fragment(), OndogClickListener {
                     setUpdateLayoutVisibilty(View.GONE)
                     context?.let {
                         val message = dogState.message ?: getString(R.string.error)
-                        Snackbar.make(activity!!.rootLayout, message, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(requireActivity().rootLayout, message, Snackbar.LENGTH_LONG).show()
                     }
                 }
 
@@ -79,7 +78,7 @@ class DogsFragment : Fragment(), OndogClickListener {
             }
         })
 
-        dogsViewModel?.breedLiveData?.observe(this, Observer {
+        dogsViewModel?.breedLiveData?.observe(viewLifecycleOwner, Observer {
 
             if (it == null) {
                 return@Observer
@@ -93,7 +92,7 @@ class DogsFragment : Fragment(), OndogClickListener {
                     }
 
                     val spinnerArrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                        activity, android.R.layout.simple_spinner_item,
+                        requireContext(), android.R.layout.simple_spinner_item,
                         spinList
                     ) //selected item will look like a spinner set from XML
 
@@ -106,15 +105,15 @@ class DogsFragment : Fragment(), OndogClickListener {
                             position: Int,
                             id: Long
                         ) {
-                          //  dogsViewModel?.refreshdogs(it.dogs[position].id)
+                            //  dogsViewModel?.refreshdogs(it.dogs[position].id)
 
-                        val breedId =  it.dogs[position].id
-                        GlobalScope.launch {
-                            dogAdapter.submitData(PagingData.empty())
-                            dogsViewModel?.getListforSearch(breedId)?.collect {
-                                dogAdapter.submitData(it)
+                            val breedId =  it.dogs[position].id
+                            GlobalScope.launch {
+                                dogAdapter.submitData(PagingData.empty())
+                                dogsViewModel?.getListforSearch(breedId)?.collect {
+                                    dogAdapter.submitData(it)
+                                }
                             }
-                        }
 
 
                         }
@@ -133,12 +132,21 @@ class DogsFragment : Fragment(), OndogClickListener {
         dogsViewModel?.getBreeds()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_dogs, container, false)
+    }
+
+
     override fun dogClicked(dog: DogData) {
      //   findNavController().navigate(dogsFragmentDirections.actiondogsFragmentToCommentsFragment(dog.id))
     }
 
     fun setUpdateLayoutVisibilty(value: Int) {
-        activity!!.updateLayout.apply {
+        requireActivity().updateLayout.apply {
             visibility = value
         }
     }
