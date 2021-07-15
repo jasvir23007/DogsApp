@@ -2,26 +2,47 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvSelect"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@android:color/black"
+        android:text="@string/select_a_dog_breed"
+        android:layout_height="wrap_content"/>
+
+
 
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/spBreed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="56dp"
-        android:background="@drawable/ic_baseline_arrow_drop_down_24"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:minHeight="40dp"
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
         android:spinnerMode="dropdown"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSelect" />
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dogsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:clipToPadding="false"
+        android:layout_marginTop="@dimen/margin_medium"
         app:spanCount="3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/margin_large"
         app:layout_constraintTop_toBottomOf="@+id/spBreed" />
 </androidx.constraintlayout.widget.ConstraintLayout>

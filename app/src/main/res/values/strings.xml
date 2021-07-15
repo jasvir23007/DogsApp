@@ -11,4 +11,5 @@
     <string name="emty_body">Empty Body</string>
     <string name="comments">Comments</string>
     <string name="dogs">dogs</string>
+    <string name="select_a_dog_breed">Select a dog breed</string>
 </resources>
