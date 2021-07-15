@@ -17,9 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class DogsViewModel(
-    private val api: Api,
-    private val repository: Repository,
+class DogsViewModel(private val repository: Repository,
     uiContext: CoroutineContext = Dispatchers.Main
 ) :
     CouroutineViewModel(uiContext) {
@@ -29,7 +27,7 @@ class DogsViewModel(
 
 
     fun getListforSearch(breedId: Int): Flow<PagingData<DogData>> {
-        val listData = Pager(PagingConfig(pageSize = 1)) {
+        val listData = Pager(PagingConfig(pageSize = 20)) {
             SearchDataSource(repository, breedId)
         }.flow.cachedIn(this)
         return listData
