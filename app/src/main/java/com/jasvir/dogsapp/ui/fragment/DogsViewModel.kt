@@ -17,6 +17,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Viewmodel for api
+ *
+ * @property repository to call api
+ * @constructor to init viewmodel
+ * T
+ *
+ * @param uiContext coroutine context
+ */
 class DogsViewModel(private val repository: Repository,
     uiContext: CoroutineContext = Dispatchers.Main
 ) :
@@ -25,7 +34,13 @@ class DogsViewModel(private val repository: Repository,
     private val breedState = MutableLiveData<BreedState>()
     val breedLiveData: LiveData<BreedState> = breedState
 
-
+    /**
+     * init paging library
+     *
+     * @param breedId to search
+     * @return  Paged list with kotlin flow
+     *
+     */
     fun getListforSearch(breedId: Int): Flow<PagingData<DogData>> {
         val listData = Pager(PagingConfig(pageSize = 20)) {
             SearchDataSource(repository, breedId)
@@ -33,9 +48,13 @@ class DogsViewModel(private val repository: Repository,
         return listData
     }
 
+    /**
+     * get breeds
+     *
+     */
     fun getBreeds() = launch {
         breedState.value = BreedState.Loading
-        breedState.value = repository.getCommentsFordogs()
+        breedState.value = repository.getBreedsFordogs()
     }
 
 

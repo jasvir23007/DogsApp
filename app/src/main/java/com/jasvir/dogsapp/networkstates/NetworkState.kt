@@ -4,6 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 
+/**
+ * class to check if connected to internet
+ *
+ * @property context of application
+ */
 class NetworkState(private val context: Application) {
 
     fun isConnected(): Boolean {

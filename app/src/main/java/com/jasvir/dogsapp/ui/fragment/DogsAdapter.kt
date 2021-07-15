@@ -11,6 +11,10 @@ import com.bumptech.glide.Glide
 import com.jasvir.dogsapp.data.DogData
 import kotlinx.android.synthetic.main.adapter_dogs.view.*
 
+/**
+ * adapter for pagination
+ *
+ */
 class DogAdapter() :
      PagingDataAdapter<DogData, DogViewHolder>(DogsDiffCallBack())  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
@@ -27,7 +31,10 @@ class DogAdapter() :
 
 }
 
-
+/**
+ * diff utils for pagination
+ *
+ */
 class DogsDiffCallBack : DiffUtil.ItemCallback<DogData>() {
     override fun areItemsTheSame(oldItem: DogData, newItem: DogData): Boolean {
         return oldItem.url == newItem.url

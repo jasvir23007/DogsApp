@@ -4,6 +4,10 @@ import android.app.Application
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 
+/**
+ * Application class
+ *
+ */
 class DogsApplication : Application() {
 
     override fun onCreate() {

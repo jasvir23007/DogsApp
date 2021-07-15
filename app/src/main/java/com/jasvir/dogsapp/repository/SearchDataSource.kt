@@ -7,6 +7,12 @@ import com.jasvir.dogsapp.data.DogData
 import com.jasvir.dogsapp.data.Repository
 
 
+/**
+ * datasource to serch breeds for pagination
+ *
+ * @property repository to call api
+ * @property query breed id to get data
+ */
 class SearchDataSource(private val repository: Repository,
                         private val query: Int): PagingSource<Int, DogData>() {
 

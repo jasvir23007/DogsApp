@@ -3,10 +3,8 @@ package com.jasvir.dogsapp.data
 import android.app.Application
 import com.jasvir.dogsapp.R
 import com.jasvir.dogsapp.networkstates.BreedState
-import com.jasvir.dogsapp.networkstates.DogsState
 import com.jasvir.dogsapp.networkstates.NetworkState
 import com.jasvir.dogsapp.utils.Constants
-import com.jasvir.dogsapp.utils.Constants.API_KEY
 import com.jasvir.dogsapp.utils.Constants.LIMIT
 import com.jasvir.dogsapp.utils.Constants.PAGE
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,12 +12,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+
+/**
+ * repository class to get data
+ *
+ * @property dogApi api interface of retrofit
+ * @property networkState is network connected
+ * @property application refrence of application object
+ * @property backgroundDispatcher dispatcher
+ */
 class RepositoryImpl(
     private val dogApi: Api,
     private val networkState: NetworkState,
     private val application: Application,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : Repository {
+    /**
+     * get dogs images api
+     *
+     * @param nextPage for pagination
+     * @param breedId which breed images needed
+     * @return list of images
+     */
     override suspend fun getdogsState(nextPage: Int, breedId: Int): List<DogData> {
         try {
             return dogApi.getdogsResponse(Constants.API_KEY, 20, nextPage, breedId).body()!!
@@ -28,34 +42,13 @@ class RepositoryImpl(
         }
     }
 
-//    //Switched context to background thread
-//    override suspend fun getdogsState(breedId: Int): DogsState =
-//        withContext(backgroundDispatcher) {
-//            if (!networkState.isConnected()) {
-//                return@withContext DogsState.Error(application.getString(R.string.not_connected))
-//            }
-//
-//            val response = try {
-//                dogApi.getdogsResponse(API_KEY, LIMIT, PAGE , breedId)
-//            } catch (e: Throwable) {
-//                //Sending a generic exception to the view for now
-//
-//                Timber.e(e)
-//                return@withContext DogsState.Error(application.getString(R.string.network_error))
-//            }
-//
-//            return@withContext if (response.isSuccessful) {
-//                response.body()?.let {
-//                    DogsState.DogsLoaded(it)
-//                } ?: DogsState.Error(application.getString(R.string.emty_body))
-//            } else {
-//                Timber.e(response.message())
-//                DogsState.Error(response.message())
-//            }
-//        }
-
+    /**
+     * api to get breeds
+     *
+     * @return list of breeds
+     */
     //Switched context to background thread
-    override suspend fun getCommentsFordogs(): BreedState = withContext(backgroundDispatcher) {
+    override suspend fun getBreedsFordogs(): BreedState = withContext(backgroundDispatcher) {
         if (!networkState.isConnected()) {
             return@withContext BreedState.Error(application.getString(R.string.not_connected))
         }
@@ -82,5 +75,5 @@ class RepositoryImpl(
 
 interface Repository {
     suspend fun getdogsState(nextPage: Int, breedId: Int): List<DogData>
-    suspend fun getCommentsFordogs(): BreedState
+    suspend fun getBreedsFordogs(): BreedState
 }

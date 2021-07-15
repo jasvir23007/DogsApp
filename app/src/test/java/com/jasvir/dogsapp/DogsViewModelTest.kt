@@ -1,10 +1,8 @@
 package com.jasvir.dogsapp
 
 import androidx.lifecycle.Observer
-import androidx.paging.PagingData
 import com.jasvir.dogsapp.data.DogData
 import com.jasvir.dogsapp.networkstates.BreedState
-import com.jasvir.dogsapp.networkstates.DogsState
 import com.jasvir.dogsapp.ui.fragment.DogsViewModel
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.flow.collect

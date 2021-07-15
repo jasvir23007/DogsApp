@@ -18,9 +18,7 @@ import com.jasvir.dogsapp.R
 import com.jasvir.dogsapp.coroutines.MainThreadScope
 import com.google.android.material.snackbar.Snackbar
 import com.jasvir.dogsapp.data.Breed
-import com.jasvir.dogsapp.data.DogData
 import com.jasvir.dogsapp.networkstates.BreedState
-import com.jasvir.dogsapp.networkstates.DogsState
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dogs.*
 import kotlinx.coroutines.GlobalScope
@@ -28,7 +26,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-
+/**
+ * fragment to display dogs list
+ *
+ */
 class DogsFragment : Fragment(), LifecycleObserver {
     private val uiScope = MainThreadScope()
     private var dogsViewModel: DogsViewModel? = null
@@ -89,7 +90,12 @@ class DogsFragment : Fragment(), LifecycleObserver {
         return inflater.inflate(R.layout.fragment_dogs, container, false)
     }
 
-
+    /**
+     * TODO
+     *
+     * @param list list of breeds to display in spinner
+     * @param dogAdapter list adapter
+     */
     fun setupSpinner(list: List<Breed>, dogAdapter: DogAdapter) {
         val spinList = ArrayList<String>()
         for (breed in list) {
@@ -127,6 +133,11 @@ class DogsFragment : Fragment(), LifecycleObserver {
 
     }
 
+    /**
+     * func to show and hide
+     *
+     * @param value visible or gone
+     */
     fun setUpdateLayoutVisibilty(value: Int) {
         requireActivity().updateLayout.apply {
             visibility = value

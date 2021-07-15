@@ -9,6 +9,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlin.coroutines.CoroutineContext
 
+/**
+ *
+ * class for main thread scope
+ */
 class MainThreadScope : CoroutineScope, LifecycleObserver {
 
     private val job = SupervisorJob()
